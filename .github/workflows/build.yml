@@ -1,4 +1,5 @@
-name: Nextjs Build Export
+name: NEXTJS Build Export
+
 
 on:
   push:
@@ -6,39 +7,19 @@ on:
       - main
 
 job:
-    name: Task1
-      runs-on: ubuntu-latest
-      steps:
-        - name : First Step - Job 1
-          run: echo "First Step in Job 1"
+  name: job1
+  runs-on : ubentu-latest
+  steps:
 
-        - name: Create a File - Job 1
-          run: echo "Task1 file" > Task1.txt
+  - name: Checkout
+    run : actions/checkout@4
 
-        - uses: actions/upload-artifact@v4
-          with:
-            name: Task1-file
-            path: Task1.txt
+  - name: Install Netlify CLI
+    run : npm install -g netlify-cli
 
-      - name: Build
-        run : npm run build
-
-      - name: Verfiy the Output Folder
-        run : ls -l out
-
-      - name: Upload Artifact 
-        uses: actions/upload-artifact@v4
-        with:
-          name: NEWPROJECT Build Package
-          path: out
-
-      - name: Install Netlify CLI
-        run : npm install -g netlify-cli
-
-      - name: Deploy to netlify
-        run: |
-          netlify deploy --prod \
-            --dir=out   \
-            --site ${{ secrets.NETLIFY_SITE_ID }} \
-            --auth ${{ secrets.NETLIFY_USER_TOKEN }}
-            
+  - name: Deploy to netlify
+      run: |
+        netlify deploy --prod \
+          --dir=.  \
+          --site ${{ secrets.NETLIFY_SITE_ID }} \
+          --auth ${{ secrets.NETLIFY_USER_TOKEN }}
